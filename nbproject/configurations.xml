@@ -30,6 +30,7 @@
       <itemPath>FieldOled.c</itemPath>
       <itemPath>Lab09_main.c</itemPath>
       <itemPath>Uart1.c</itemPath>
+      <itemPath>Message.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
