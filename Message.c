@@ -44,9 +44,11 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             //      record char
             //
             // } else if (max payload length exceeded) {
+            //      currentDecodeState = WAITING_FOR_START_DELIMITER;
             //      return ERROR;
             //
             // } else if (unexpected delimiter) {
+            //      currentDecodeState = WAITING_FOR_START_DELIMITER;
             //      return ERROR;
             // }
             break;
@@ -60,15 +62,19 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             //      parse checksum
             //
             //      if (payload is valid && checksum matches payload){
+            //          currentDecodeState = WAITING_FOR_START_DELIMITER;
             //          return MESSAGE_RECIEVED;
             //      } else {
+            //          currentDecodeState = WAITING_FOR_START_DELIMITER;
             //          return ERROR;
             //      }
             //
             // } else if (incorrect checksum length) {
+            //      currentDecodeState = WAITING_FOR_START_DELIMITER;
             //      return ERROR;
             //
             // } else if (any other char) {
+            //      currentDecodeState = WAITING_FOR_START_DELIMITER;
             //      return ERROR;
             // }
             break;
