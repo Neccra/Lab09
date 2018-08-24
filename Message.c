@@ -17,7 +17,12 @@ typedef enum {
 static DecodeStates currentDecodeState;
 
 uint8_t Message_CalculateChecksum(const char* payload) {
-
+    //  uint8_t checkSum;
+    //  if (payload = NULL){
+    //      return checkSum;
+    //  } else {
+    //      return checkSum ^ Message_CalculateChecksum (payload +1);
+    //  }
 }
 
 int Message_ParseMessage(const char* payload,
@@ -36,7 +41,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             //      currentDecodeState = RECORDING_PAYLOAD;  
             break;
 
-        case RECORDING_PAYLOAD;
+        case RECORDING_PAYLOAD:
             // if (checksum delimiter) {
             //      currentDecodeState = RECORDING_SUM;
             //
@@ -53,7 +58,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             // }
             break;
 
-        case RECORDING_SUM;
+        case RECORDING_SUM:
             // if (hex char) {
             //      record character
             // }
