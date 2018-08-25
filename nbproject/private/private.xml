@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/George/Desktop/UCSC/CMPE_13/Lab09/Round%202/Lab09/Negotiation.c</file>
-            <file>file:/C:/Users/George/Desktop/UCSC/CMPE_13/Lab09/Round%202/Lab09/Message.h</file>
-            <file>file:/C:/Users/George/Desktop/UCSC/CMPE_13/Lab09/Round%202/Lab09/Agent.h</file>
-            <file>file:/C:/Users/George/Desktop/UCSC/CMPE_13/Lab09/Round%202/Lab09/Agent.c</file>
-            <file>file:/C:/Users/George/Desktop/UCSC/CMPE_13/Lab09/Round%202/Lab09/Message.c</file>
+            <file>file:/S:/cmpe13/BattleBoat/Lab09/Message.c</file>
+            <file>file:/S:/cmpe13/BattleBoat/Lab09/BattleBoats.h</file>
+            <file>file:/S:/cmpe13/BattleBoat/Lab09/Message.h</file>
+            <file>file:/S:/cmpe13/BattleBoat/Lab09/NegotiationTest.c</file>
         </group>
     </open-files>
 </project-private>
