@@ -11,7 +11,7 @@ NegotiationData parity;
 int count;
 
 NegotiationData NegotiationHash(NegotiationData secret){
-//   secret = srand();                          // Unsure if need to generate a random number at this point;
+//   secret = srand();                          // Unsure if need to generate a random number at this point; REALLY SURE I DON'T CALL HERE!!
 //    hash = (secret*secret) % PUBLIC_KEY;      // creates hash of secret number via A^2 mod 0xBEEF
 //    return hash;                              // Returns the hash to be used for challenge
 }
