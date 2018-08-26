@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=Lab09
 
 # Active Configuration
-DEFAULTCONF=default
+DEFAULTCONF=BattleBoats
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=default 
+ALLCONFS=BattleBoats Negotiation_Test Agent_Test Message_Test Field_Test 
 
 
 # build
@@ -45,13 +45,21 @@ ALLCONFS=default
 
 # clobber
 .clobber-impl: .clobber-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=BattleBoats clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Negotiation_Test clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Agent_Test clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Message_Test clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Field_Test clean
 
 
 
 # all
 .all-impl: .all-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=BattleBoats build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Negotiation_Test build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Agent_Test build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Message_Test build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Field_Test build
 
 
 
