@@ -211,7 +211,9 @@
         <property key="save-temps" value="false"/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <item path="Lab09_main.c" ex="true" overriding="false">
+      <item path="Negotiation.c" ex="true" overriding="false">
+      </item>
+      <item path="NegotiationTest.c" ex="true" overriding="false">
       </item>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
