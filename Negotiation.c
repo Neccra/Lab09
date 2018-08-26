@@ -3,15 +3,17 @@
 #include <stdio.h>
 #include "Negotiation.h"
 #include "BOARD.h"
-#include "Message.h"
+//#include "Message.h"
 
 #define DEUCE 2
 NegotiationData hash;
 NegotiationData parity;
 int count;
 
+// Helper function to determine the parity for the Coin Flip
+int ParityCount(NegotiationData Input);
+
 NegotiationData NegotiationHash(NegotiationData secret){
-//   secret = srand();                          // Unsure if need to generate a random number at this point; REALLY SURE I DON'T CALL HERE!!
     hash = (secret*secret) % PUBLIC_KEY;      // creates hash of secret number via A^2 mod 0xBEEF
     return hash;                              // Returns the hash to be used for challenge
 }
@@ -34,12 +36,12 @@ NegotiationOutcome NegotiateCoinFlip(NegotiationData A, NegotiationData B){
     }
 }
 
-// Helper function to determine the parity for the Coin Flip
+
 int ParityCount(NegotiationData Input){
     while(Input != 0){
         if((Input%DEUCE) == 1){
             count++;
-            Input =- 1;
+            Input -= 1;
         } else {
             Input = Input/DEUCE;
         }
