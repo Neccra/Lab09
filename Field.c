@@ -10,7 +10,9 @@
 #include "BOARD.h"
 #include "xc.h"
 #include "Field.h"
-#define BOAT_COUNT 1
+#define BOAT_LIVES 1
+#define ZERO_LIVES 0
+#define TWO_DIR 2
 
 void FieldPrint_UART(Field *own_field, Field * opp_field) {
 
@@ -22,18 +24,18 @@ void FieldInit(Field *own_field, Field * opp_field) {
         for (col = 0; col < FIELD_COLS; ++col) {
             // initialize all grid to 0
             own_field->grid[row][col] = FIELD_SQUARE_EMPTY;
-            opp_field->grid[row][col] = FIELD_SQUARE_EMPTY;
+            opp_field->grid[row][col] = FIELD_SQUARE_UNKNOWN;
         }
     }
     // set opponent boat lives
-    opp_field->smallBoatLives = BOAT_COUNT;
-    opp_field->mediumBoatLives = BOAT_COUNT;
-    opp_field->largeBoatLives = BOAT_COUNT;
-    opp_field->hugeBoatLives = BOAT_COUNT;
+    opp_field->smallBoatLives = BOAT_LIVES;
+    opp_field->mediumBoatLives = BOAT_LIVES;
+    opp_field->largeBoatLives = BOAT_LIVES;
+    opp_field->hugeBoatLives = BOAT_LIVES;
 }
 
 SquareStatus FieldGetSquareStatus(const Field *f, uint8_t row, uint8_t col) {
-    if (row < FIELD_ROWS || row > FIELD_ROWS || col < FIELD_COLS || col > FIELD_COLS) {
+    if ( row > FIELD_ROWS || col > FIELD_COLS) {
         return FIELD_SQUARE_INVALID;
     } else {
         return f->grid[row][col];
@@ -92,10 +94,12 @@ uint8_t FieldAddBoat(Field *f, uint8_t row, uint8_t col, BoatDirection dir, Boat
     }
 }
 
+// update self board
+
 SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
     SquareStatus previousStatus;
     previousStatus = FieldGetSquareStatus(f, gData->row, gData->col);
-    
+
     if (FIELD_SQUARE_EMPTY == previousStatus) {
         // if square is empty, set as miss
         FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_MISS);
@@ -110,16 +114,66 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
     return previousStatus;
 }
 
-SquareStatus FieldUpdateKnowledge(Field *f, const GuessData * gData) {
+// update opponent board
 
+SquareStatus FieldUpdateKnowledge(Field *f, const GuessData * gData) {
+    SquareStatus previousValue;
+    previousValue = FieldGetSquareStatus(f, gData->row, gData->col);
+
+    if (gData->result == RESULT_MISS) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_EMPTY);
+
+    } else if (gData->result == RESULT_HIT) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+
+    } else if (gData->result == RESULT_SMALL_BOAT_SUNK) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+        f->smallBoatLives = ZERO_LIVES;
+
+    } else if (gData->result == RESULT_MEDIUM_BOAT_SUNK) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+        f->mediumBoatLives = ZERO_LIVES;
+
+    } else if (gData->result == RESULT_LARGE_BOAT_SUNK) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+        f->largeBoatLives = ZERO_LIVES;
+
+    } else if (gData->result == RESULT_HUGE_BOAT_SUNK) {
+        FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+        f->hugeBoatLives = ZERO_LIVES;
+
+    }
+    return previousValue;
 }
 
 uint8_t FieldGetBoatStates(const Field * f) {
-
+    uint8_t boatStatesResult = 0x00;
+    if (f->smallBoatLives = BOAT_LIVES) {
+        boatStatesResult = boatStatesResult & 0x01;
+    }
+    if (f->mediumBoatLives = BOAT_LIVES) {
+        boatStatesResult = boatStatesResult & 0x02;
+    }
+    if (f->largeBoatLives = BOAT_LIVES) {
+        boatStatesResult = boatStatesResult & 0x04;
+    }
+    if (f->hugeBoatLives = ZERO_LIVES) {
+        boatStatesResult = boatStatesResult & 0x80;
+    }
+    return boatStatesResult;
 }
 
 uint8_t FieldAIPlaceAllBoats(Field * f) {
-
+    int rowRand, colRand, dirRand;
+    BoatDirection dirRand;
+    BoatType thisType;
+    SquareStatus curStatus;
+    rowRand = rand() % FIELD_ROWS;
+    colRand = rand() % FIELD_COLS;
+    dirRand = rand() % TWO_DIR;
+    while (curStatus == ) {
+        curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+    }
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
