@@ -13,6 +13,16 @@
 #define BOAT_LIVES 1
 #define ZERO_LIVES 0
 #define TWO_DIR 2
+#define EAST_DIR 1
+#define SOUTH_DIR 0
+#define OCCUPIED 1
+#define EMPTY 0
+
+typedef struct {
+    uint8_t row;
+    uint8_t col;
+
+};
 
 void FieldPrint_UART(Field *own_field, Field * opp_field) {
 
@@ -35,7 +45,7 @@ void FieldInit(Field *own_field, Field * opp_field) {
 }
 
 SquareStatus FieldGetSquareStatus(const Field *f, uint8_t row, uint8_t col) {
-    if ( row > FIELD_ROWS || col > FIELD_COLS) {
+    if (row > FIELD_ROWS || col > FIELD_COLS) {
         return FIELD_SQUARE_INVALID;
     } else {
         return f->grid[row][col];
@@ -164,18 +174,143 @@ uint8_t FieldGetBoatStates(const Field * f) {
 }
 
 uint8_t FieldAIPlaceAllBoats(Field * f) {
-    int rowRand, colRand, dirRand;
+    // variables
+    int rowRand, colRand, dirRand, row, col, emptyStatus;
     BoatDirection dirRand;
     BoatType thisType;
     SquareStatus curStatus;
-    rowRand = rand() % FIELD_ROWS;
-    colRand = rand() % FIELD_COLS;
-    dirRand = rand() % TWO_DIR;
-    while (curStatus == ) {
-        curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+
+    // empty field check
+    while (emptyStatus != EMPTY) { // exit if fully empty
+        rowRand = rand() % FIELD_ROWS;
+        colRand = rand() % FIELD_COLS;
+        dirRand = rand() % TWO_DIR;
+        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
     }
+    // place boats
+    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
+
+    // empty field check
+    while (emptyStatus != EMPTY) { // exit if fully empty
+        rowRand = rand() % FIELD_ROWS;
+        colRand = rand() % FIELD_COLS;
+        dirRand = rand() % TWO_DIR;
+        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
+    }
+    // place boats
+    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
+
+    // empty field check
+    while (emptyStatus != EMPTY) { // exit if fully empty
+        rowRand = rand() % FIELD_ROWS;
+        colRand = rand() % FIELD_COLS;
+        dirRand = rand() % TWO_DIR;
+        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
+    }
+    // place boats
+    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
+
+    // empty field check
+    while (emptyStatus != EMPTY) { // exit if fully empty
+        rowRand = rand() % FIELD_ROWS;
+        colRand = rand() % FIELD_COLS;
+        dirRand = rand() % TWO_DIR;
+        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
+    }
+    // place boats
+    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
 
 }
+
+int EmptyFieldCheck(Field *f, uint8_t rowHead, uint8_t colHead,
+        int dir, BoatType boatType) {
+    int row, col;
+
+    // check direction
+    if (dir == EAST_DIR) {
+
+        // check boat_type
+        if (boat_type == FIELD_BOAT_TYPE_SMALL) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_SMALL + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_MEDIUM) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_MEDIUM + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_LARGE) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_LARGE + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_HUGE) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_HUGE + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        }
+
+    } else if (dir == SOUTH_DIR) {
+
+        // check boat_type
+        if (boat_type == FIELD_BOAT_TYPE_SMALL) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_SMALL + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_MEDIUM) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_MEDIUM + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_LARGE) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_LARGE + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        } else if (boat_type == FIELD_BOAT_TYPE_HUGE) {
+            for (row = rowHead; row > (FIELD_BOAT_SIZE_HUGE + rowHead), ++row) {
+                curStatus = FieldGetSquareStatus(f, rowRand, colRand);
+                if (curStatus != FIELD_SQUARE_EMPTY) {
+                    return OCCUPIED;
+                } else {
+                    return EMPTY;
+                }
+            }
+        }
+    }
+}
+
