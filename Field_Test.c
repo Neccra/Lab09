@@ -7,13 +7,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "Field.h"
+#include "BOARD.h"
 
-/*
- * 
- */
-int main(int argc, char** argv)
-{
+Field ownField;
+Field oppField;
 
-    return (EXIT_SUCCESS);
+int main(void) {
+    BOARD_Init();
+    FieldInit(&ownField, &oppField);
+    printf("\nField Test Harness, compiled on %s %s\n", __DATE__, __TIME__);
+    FieldPrint_UART(&ownField, &oppField);
+
+
+    
+    
+    while (1);
 }
 
