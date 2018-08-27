@@ -35,7 +35,7 @@ int main(void) {
     }
 
     // coin flip
-    printf("\n\NegotiateCoinFlip 2: 0x%04x", NegotiateCoinFlip(testData1, testData2));
+    printf("\nNegotiateCoinFlip 2: 0x%04x", NegotiateCoinFlip(testData1, testData2));
 
     while (1);
 }

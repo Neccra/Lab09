@@ -27,7 +27,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=Lab09
 
 # Active Configuration
-DEFAULTCONF=BattleBoats
+DEFAULTCONF=Negotiation_Test
 CONF=${DEFAULTCONF}
 
 # All Configurations
