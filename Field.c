@@ -60,7 +60,7 @@ void FieldPrint_UART(Field *own_field, Field * opp_field) {
     // <editor-fold defaultstate="collapsed" desc="print opponent field">
     for (row = 0; row < FIELD_ROWS; ++row) {
         for (col = 0; col < FIELD_COLS; ++col) {
-            if (own_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
+            if (opp_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
                 printf("~");
             } else if (opp_field->grid[row][col] == FIELD_SQUARE_UNKNOWN) {
                 printf("?");
@@ -146,14 +146,20 @@ uint8_t FieldAddBoat(Field *f, uint8_t row, uint8_t col, BoatDirection dir, Boat
     // check direction
     if (dir == FIELD_DIR_EAST) {
         for (colCount = 0; colCount < boatSize; ++colCount) {
-            f->grid[row][col] = boatType;
+            if(col+colCount>FIELD_COLS){
+                return STANDARD_ERROR;
+            }
+            f->grid[row][(col+colCount)] = boatType;
 
         }
         return SUCCESS;
 
     } else if (dir == FIELD_DIR_SOUTH) {
         for (rowCount = 0; rowCount < boatSize; ++rowCount) {
-            f->grid[row][col] = boatType;
+            if(row+rowCount>FIELD_ROWS){
+                return STANDARD_ERROR;
+            }
+            f->grid[(row+rowCount)][col] = boatType;
         }
         return SUCCESS;
     } else {
@@ -276,6 +282,7 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
+    emptyStatus = OCCUPIED;
 
     // empty field check
     while (emptyStatus != EMPTY) { // exit if fully empty
@@ -286,6 +293,7 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
+    emptyStatus = OCCUPIED;
 
     // empty field check
     while (emptyStatus != EMPTY) { // exit if fully empty
@@ -296,7 +304,8 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
-
+    emptyStatus = OCCUPIED;
+    
     // empty field check
     while (emptyStatus != EMPTY) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
@@ -306,6 +315,7 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
+    return SUCCESS;
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {

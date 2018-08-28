@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Negotiation.c NegotiationTest.c
+SOURCEFILES_QUOTED_IF_SPACED=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c NegotiationTest.c Field.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/NegotiationTest.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/BOARD.o.d ${OBJECTDIR}/CircularBuffer.o.d ${OBJECTDIR}/FieldOled.o.d ${OBJECTDIR}/Uart1.o.d ${OBJECTDIR}/Negotiation.o.d ${OBJECTDIR}/NegotiationTest.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/NegotiationTest.o ${OBJECTDIR}/Field.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/BOARD.o.d ${OBJECTDIR}/CircularBuffer.o.d ${OBJECTDIR}/FieldOled.o.d ${OBJECTDIR}/Uart1.o.d ${OBJECTDIR}/Message.o.d ${OBJECTDIR}/Negotiation.o.d ${OBJECTDIR}/Agent.o.d ${OBJECTDIR}/NegotiationTest.o.d ${OBJECTDIR}/Field.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/NegotiationTest.o
+OBJECTFILES=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/NegotiationTest.o ${OBJECTDIR}/Field.o
 
 # Source Files
-SOURCEFILES=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Negotiation.c NegotiationTest.c
+SOURCEFILES=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c NegotiationTest.c Field.c
 
 
 CFLAGS=
@@ -130,17 +130,35 @@ ${OBJECTDIR}/Uart1.o: Uart1.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Uart1.o 
 	@${FIXDEPS} "${OBJECTDIR}/Uart1.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Uart1.o.d" -o ${OBJECTDIR}/Uart1.o Uart1.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/Message.o: Message.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Message.o.d 
+	@${RM} ${OBJECTDIR}/Message.o 
+	@${FIXDEPS} "${OBJECTDIR}/Message.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Message.o.d" -o ${OBJECTDIR}/Message.o Message.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/Negotiation.o: Negotiation.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Negotiation.o.d 
 	@${RM} ${OBJECTDIR}/Negotiation.o 
 	@${FIXDEPS} "${OBJECTDIR}/Negotiation.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Negotiation.o.d" -o ${OBJECTDIR}/Negotiation.o Negotiation.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/Agent.o: Agent.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Agent.o.d 
+	@${RM} ${OBJECTDIR}/Agent.o 
+	@${FIXDEPS} "${OBJECTDIR}/Agent.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Agent.o.d" -o ${OBJECTDIR}/Agent.o Agent.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/NegotiationTest.o: NegotiationTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/NegotiationTest.o.d 
 	@${RM} ${OBJECTDIR}/NegotiationTest.o 
 	@${FIXDEPS} "${OBJECTDIR}/NegotiationTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/NegotiationTest.o.d" -o ${OBJECTDIR}/NegotiationTest.o NegotiationTest.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/Field.o: Field.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Field.o.d 
+	@${RM} ${OBJECTDIR}/Field.o 
+	@${FIXDEPS} "${OBJECTDIR}/Field.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Field.o.d" -o ${OBJECTDIR}/Field.o Field.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
 else
 ${OBJECTDIR}/BOARD.o: BOARD.c  nbproject/Makefile-${CND_CONF}.mk
@@ -167,17 +185,35 @@ ${OBJECTDIR}/Uart1.o: Uart1.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Uart1.o 
 	@${FIXDEPS} "${OBJECTDIR}/Uart1.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Uart1.o.d" -o ${OBJECTDIR}/Uart1.o Uart1.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/Message.o: Message.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Message.o.d 
+	@${RM} ${OBJECTDIR}/Message.o 
+	@${FIXDEPS} "${OBJECTDIR}/Message.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Message.o.d" -o ${OBJECTDIR}/Message.o Message.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/Negotiation.o: Negotiation.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/Negotiation.o.d 
 	@${RM} ${OBJECTDIR}/Negotiation.o 
 	@${FIXDEPS} "${OBJECTDIR}/Negotiation.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Negotiation.o.d" -o ${OBJECTDIR}/Negotiation.o Negotiation.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/Agent.o: Agent.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Agent.o.d 
+	@${RM} ${OBJECTDIR}/Agent.o 
+	@${FIXDEPS} "${OBJECTDIR}/Agent.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Agent.o.d" -o ${OBJECTDIR}/Agent.o Agent.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/NegotiationTest.o: NegotiationTest.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/NegotiationTest.o.d 
 	@${RM} ${OBJECTDIR}/NegotiationTest.o 
 	@${FIXDEPS} "${OBJECTDIR}/NegotiationTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/NegotiationTest.o.d" -o ${OBJECTDIR}/NegotiationTest.o NegotiationTest.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/Field.o: Field.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Field.o.d 
+	@${RM} ${OBJECTDIR}/Field.o 
+	@${FIXDEPS} "${OBJECTDIR}/Field.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Field.o.d" -o ${OBJECTDIR}/Field.o Field.c    -DXPRJ_Negotiation_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
 endif
 

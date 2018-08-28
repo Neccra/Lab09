@@ -34,7 +34,7 @@ int Message_ParseMessage(const char* payload,
         const char* checksum_string, BB_Event * message_event) {
     uint8_t derivedChecksum;
     // check for errors
-    if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN || message_event.type == MESSAGE_NONE){
+    if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN || message_event->type == MESSAGE_NONE){
         return STANDARD_ERROR;
     }
 

@@ -11,8 +11,8 @@
 #include "FieldOled.h"
 
 
-Field * oppField;
-Field * ownField;
+Field oppField;
+Field ownField;
 uint8_t result, row, col, turnCounter, ownBoatStatus, oppBoatStatus, prevSmallLives, prevMediumLives,
         prevLargeLives, prevHugeLives;
 BoatDirection direction;
@@ -28,8 +28,8 @@ SquareStatus squareStatus;
 char display[100];
 
 void AgentInit(void){
-    FieldInit(ownField, oppField);
-    result = FieldAIPlaceAllBoats(ownField);
+    FieldInit(&ownField, &oppField);
+    result = FieldAIPlaceAllBoats(&ownField);
     Agent_State = AGENT_STATE_START;
 //    while(huge == FALSE && large == FALSE && medium == FALSE && small == FALSE){
 //        row = rand() % FIELD_ROWS;
@@ -97,10 +97,10 @@ Message AgentRun(BB_Event event){
             Agent_State = AGENT_STATE_ACCEPTING;
         } else {
             message.type = MESSAGE_NONE;
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Start, but not Start Button or CHA Received");
-            OledDrawString(display);
-            OledUpdate();
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Start, but not Start Button or CHA Received");
+//            OledDrawString(display);
+//            OledUpdate();
         }
         break;
     case AGENT_STATE_CHALLENGING:
@@ -115,10 +115,10 @@ Message AgentRun(BB_Event event){
         } 
         else {
             message.type = MESSAGE_NONE;
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Challenging, but not ACC Received");
-            OledDrawString(display);
-            OledUpdate();
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Challenging, but not ACC Received");
+//            OledDrawString(display);
+//            OledUpdate();
         }
         break;
     case AGENT_STATE_ACCEPTING:
@@ -127,7 +127,7 @@ Message AgentRun(BB_Event event){
                 row = rand();
                 col = rand();
                 message.type = MESSAGE_SHO;
-                *guess = FieldAIDecideGuess(oppField);
+                *guess = FieldAIDecideGuess(&oppField);
                 message.param0 = guess->row;
                 message.param1 = guess->col;
                 Agent_State = AGENT_STATE_ATTACKING;
@@ -139,26 +139,26 @@ Message AgentRun(BB_Event event){
 //                Agent_State = AGENT_STATE_END_SCREEN;
         } else {
             message.type = MESSAGE_NONE;
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Accepting, but not REV Received");
-            OledDrawString(display);
-            OledUpdate();        
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Accepting, but not REV Received");
+//            OledDrawString(display);
+//            OledUpdate();        
         }
         break;
     case AGENT_STATE_WAITING_TO_SEND:
         if(event.type == BB_EVENT_MESSAGE_SENT){
             turnCounter++;
-            *guess = FieldAIDecideGuess(oppField);
+            *guess = FieldAIDecideGuess(&oppField);
             message.type = MESSAGE_SHO;
             message.param0 = guess->row;
             message.param1 = guess->col;
             Agent_State = AGENT_STATE_ATTACKING;
         } else {
             message.type = MESSAGE_NONE;
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Waiting to Send, but no Message Sent Received");
-            OledDrawString(display);
-            OledUpdate();
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Waiting to Send, but no Message Sent Received");
+//            OledDrawString(display);
+//            OledUpdate();
         }
         break;
     case AGENT_STATE_ATTACKING:
@@ -167,18 +167,18 @@ Message AgentRun(BB_Event event){
             guess->col = event.param1;
             guess->result = event.param2;
             message.type = MESSAGE_NONE;
-            squareStatus = FieldUpdateKnowledge(oppField, (const GuessData *) guess);
-            if(FieldGetBoatStates(oppField) == 0){
+            squareStatus = FieldUpdateKnowledge(&oppField, (const GuessData *) guess);
+            if(FieldGetBoatStates(&oppField) == 0){
                 Agent_State = AGENT_STATE_END_SCREEN;
             } else {
                 Agent_State = AGENT_STATE_DEFENDING;
             }
         } else {
             message.type = MESSAGE_NONE;
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Attacking, but no RES Received");
-            OledDrawString(display);
-            OledUpdate();
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Attacking, but no RES Received");
+//            OledDrawString(display);
+//            OledUpdate();
         }
         break;
     case AGENT_STATE_DEFENDING:
@@ -187,8 +187,8 @@ Message AgentRun(BB_Event event){
 //            prevMediumLives = Field.mediumBoatLives;
 //            prevLargeLives = Field.largeBoatLives;
 //            prevHugeLives = Field.hugeBoatLives;
-            squareStatus = FieldRegisterEnemyAttack(ownField, guess);
-            if(FieldGetBoatStates(ownField) == 0){
+            squareStatus = FieldRegisterEnemyAttack(&ownField, guess);
+            if(FieldGetBoatStates(&ownField) == 0){
                 message.type = MESSAGE_NONE;
                 Agent_State = AGENT_STATE_END_SCREEN;
             } else {
@@ -222,16 +222,16 @@ Message AgentRun(BB_Event event){
 //                }
 //            }
         } else {
-            OledClear(OLED_COLOR_BLACK);
-            sprintf(display, "Error! In Defending, but no SHO Received");
-            OledDrawString(display);
-            OledUpdate();
+//            OledClear(OLED_COLOR_BLACK);
+//            sprintf(display, "Error! In Defending, but no SHO Received");
+//            OledDrawString(display);
+//            OledUpdate();
         }
         //
         break;
     case AGENT_STATE_END_SCREEN:
-        ownBoatStatus = FieldGetBoatStates(ownField);
-        oppBoatStatus = FieldGetBoatStates(oppField);
+        ownBoatStatus = FieldGetBoatStates(&ownField);
+        oppBoatStatus = FieldGetBoatStates(&oppField);
         if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
             AgentInit();

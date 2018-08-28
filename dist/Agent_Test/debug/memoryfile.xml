@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <project>                                  
-  <executable name="dist/Negotiation_Test/debug/Lab09.debug.elf">                 
+  <executable name="dist/Agent_Test/debug/Lab09.debug.elf">                 
     <memory name="program">                 
       <units>bytes</units>                 
       <length>531968</length>                 
-      <used>38572</used>                     
-      <free>493396</free>                     
+      <used>39608</used>                     
+      <free>492360</free>                     
     </memory>                              
     <memory name="data">              
       <units>bytes</units>                 
       <length>32768</length>                 
-      <used>3868</used>                     
-      <free>28900</free>                     
+      <used>3896</used>                     
+      <free>28872</free>                     
     </memory>                              
   </executable>                            
 </project>                                 
