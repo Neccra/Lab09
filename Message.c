@@ -26,10 +26,10 @@ uint8_t Message_CalculateChecksum(const char* payload) {
 
     int payloadValue, increment, strLength;
     strLength = strlen(payload);
-    payloadValue =(int)*(payload + increment);
-    for(increment = 1; increment < strLength; ++increment){
-        payloadValue = payloadValue ^ (int)*(payload + increment);
-        printf("%x\n", payloadValue);
+    payloadValue = (int) *(payload);
+    for (increment = 1; increment < strLength; ++increment) {
+        payloadValue = payloadValue ^ (int) *(payload + increment);
+        //printf("%x\n", payloadValue);
     }
 
     return payloadValue;
@@ -39,23 +39,24 @@ int Message_ParseMessage(const char* payload,
         const char* checksum_string, BB_Event * message_event) {
     uint8_t derivedChecksum, givenChecksumValue;
     // check for errors
-<<<<<<< HEAD
-    if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN){
-        message_event->type = BB_EVENT_ERROR;
-=======
-    if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN || message_event->type == MESSAGE_NONE){
->>>>>>> 052b0c0d27c6c1b82755761bc329aefe6f6aff05
-        return STANDARD_ERROR;
-    }
 
-    // check if checksums equal
-    derivedChecksum = Message_CalculateChecksum(payload);
-    givenChecksumValue = (int)checksum_string + (int)(*(&checksum_string + 1));
-    if (derivedChecksum == givenChecksumValue){
-        return SUCCESS;
-    } else {
+    if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN) {
         message_event->type = BB_EVENT_ERROR;
-        return STANDARD_ERROR;
+
+        if (strlen(checksum_string) > MESSAGE_CHECKSUM_LEN) {
+
+            return STANDARD_ERROR;
+        }
+
+        // check if checksums equal
+        derivedChecksum = Message_CalculateChecksum(payload);
+        givenChecksumValue = (int) checksum_string + (int) (*(&checksum_string + 1));
+        if (derivedChecksum == givenChecksumValue) {
+            return SUCCESS;
+        } else {
+            message_event->type = BB_EVENT_ERROR;
+            return STANDARD_ERROR;
+        }
     }
 }
 

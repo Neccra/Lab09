@@ -4,19 +4,22 @@
  *
  * Created on August 26, 2018, 12:20 AM
  */
-
+// library
 #include <stdio.h>
 #include <stdlib.h>
 #include "BOARD.h"
 #include "xc.h"
 #include "Field.h"
-#define BOAT_LIVES 1
+
+// macros
+#define BOAT_STATE 0x00
+#define DAMAGE 1
 #define ZERO_LIVES 0
 #define TWO_DIR 2
 #define EAST_DIR 1
 #define SOUTH_DIR 0
 #define OCCUPIED 1
-#define EMPTY 0
+#define ITERATE_START 0
 
 //typedef struct {
 //    uint8_t row;
@@ -31,8 +34,8 @@ void FieldPrint_UART(Field *own_field, Field * opp_field) {
     int col, row;
     printf("Friendly Field:\n");
     // <editor-fold defaultstate="collapsed" desc="print friendly field">
-    for (row = 0; row < FIELD_ROWS; ++row) {
-        for (col = 0; col < FIELD_COLS; ++col) {
+    for (row = ITERATE_START; row < FIELD_ROWS; ++row) {
+        for (col = ITERATE_START; col < FIELD_COLS; ++col) {
             if (own_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
                 printf("~");
             } else if (own_field->grid[row][col] == FIELD_SQUARE_UNKNOWN) {
@@ -58,8 +61,8 @@ void FieldPrint_UART(Field *own_field, Field * opp_field) {
     // </editor-fold>
     printf("Opponent Field:\n");
     // <editor-fold defaultstate="collapsed" desc="print opponent field">
-    for (row = 0; row < FIELD_ROWS; ++row) {
-        for (col = 0; col < FIELD_COLS; ++col) {
+    for (row = ITERATE_START; row < FIELD_ROWS; ++row) {
+        for (col = ITERATE_START; col < FIELD_COLS; ++col) {
             if (opp_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
                 printf("~");
             } else if (opp_field->grid[row][col] == FIELD_SQUARE_UNKNOWN) {
@@ -87,8 +90,8 @@ void FieldPrint_UART(Field *own_field, Field * opp_field) {
 
 void FieldInit(Field *own_field, Field * opp_field) {
     int col, row;
-    for (row = 0; row < FIELD_ROWS; ++row) {
-        for (col = 0; col < FIELD_COLS; ++col) {
+    for (row = ITERATE_START; row < FIELD_ROWS; ++row) {
+        for (col = ITERATE_START; col < FIELD_COLS; ++col) {
             // initialize all grid to 0
             own_field->grid[row][col] = FIELD_SQUARE_EMPTY;
             opp_field->grid[row][col] = FIELD_SQUARE_UNKNOWN;
@@ -145,7 +148,7 @@ uint8_t FieldAddBoat(Field *f, uint8_t row, uint8_t col, BoatDirection dir, Boat
     }
     // check direction
     if (dir == FIELD_DIR_EAST) {
-        for (colCount = 0; colCount < boatSize; ++colCount) {
+        for (colCount = ITERATE_START; colCount < boatSize; ++colCount) {
             if(col+colCount>FIELD_COLS){
                 return STANDARD_ERROR;
             }
@@ -155,7 +158,7 @@ uint8_t FieldAddBoat(Field *f, uint8_t row, uint8_t col, BoatDirection dir, Boat
         return SUCCESS;
 
     } else if (dir == FIELD_DIR_SOUTH) {
-        for (rowCount = 0; rowCount < boatSize; ++rowCount) {
+        for (rowCount = ITERATE_START; rowCount < boatSize; ++rowCount) {
             if(row+rowCount>FIELD_ROWS){
                 return STANDARD_ERROR;
             }
@@ -180,7 +183,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
 
     } else if (FIELD_SQUARE_SMALL_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= 1;
+        f->smallBoatLives -= DAMAGE;
         if (f->smallBoatLives == ZERO_LIVES) {
             gData->result = RESULT_SMALL_BOAT_SUNK;
         } else {
@@ -189,7 +192,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         
     } else if (FIELD_SQUARE_MEDIUM_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= 1;
+        f->smallBoatLives -= DAMAGE;
         if (f->smallBoatLives == ZERO_LIVES) {
             gData->result = RESULT_MEDIUM_BOAT_SUNK;
         } else {
@@ -198,7 +201,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
                
     } else if (FIELD_SQUARE_LARGE_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= 1;
+        f->smallBoatLives -= DAMAGE;
         if (f->smallBoatLives == ZERO_LIVES) {
             gData->result = RESULT_LARGE_BOAT_SUNK;
         } else {
@@ -207,7 +210,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         
     } else if (FIELD_SQUARE_HUGE_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= 1;
+        f->smallBoatLives -= DAMAGE;
         if (f->smallBoatLives == ZERO_LIVES) {
             gData->result = RESULT_HUGE_BOAT_SUNK;
         } else {
@@ -250,7 +253,7 @@ SquareStatus FieldUpdateKnowledge(Field *f, const GuessData * gData) {
 }
 
 uint8_t FieldGetBoatStates(const Field * f) {
-    uint8_t boatStatesResult = 0x00;
+    uint8_t boatStatesResult = BOAT_STATE;
     if (f->smallBoatLives == BOAT_LIVES) {
         boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_SMALL;
     }
@@ -269,49 +272,101 @@ uint8_t FieldGetBoatStates(const Field * f) {
 uint8_t FieldAIPlaceAllBoats(Field * f) {
     // variables
     int rowRand, colRand;
-    int emptyStatus;
+    int emptyStatus, boat_increment, occupiedFlag;
     BoatDirection dirRand;
 
 
     // empty field check
-    while (emptyStatus != EMPTY) { // exit if fully empty
+    while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
+
+        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_HUGE; ++boat_increment){
+            if (dirRand == EAST_DIR){
+                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            } else {
+                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            }
+        }
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
     emptyStatus = OCCUPIED;
 
     // empty field check
-    while (emptyStatus != EMPTY) { // exit if fully empty
+    while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
+
+        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_LARGE; ++boat_increment){
+            if (dirRand == EAST_DIR){
+                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            } else {
+                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            }
+        }
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
     emptyStatus = OCCUPIED;
 
     // empty field check
-    while (emptyStatus != EMPTY) { // exit if fully empty
+    while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
+
+        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_MEDIUM; ++boat_increment){
+            if (dirRand == EAST_DIR){
+                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            } else {
+                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            }
+        }
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
     emptyStatus = OCCUPIED;
     
     // empty field check
-    while (emptyStatus != EMPTY) { // exit if fully empty
+    while (occupiedFlag == OCCUPIED { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-        emptyStatus = EmptyFieldCheck(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
+
+        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_TYPE_SMALL; ++boat_increment){
+            if (dirRand == EAST_DIR){
+                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            } else {
+                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                if(emptyStatus != EMPTY){
+                    occupiedFlag = OCCUPIED;
+                }
+            }
+        }
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
@@ -319,7 +374,13 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
-
+    // scan field for hits
+    // if no hits
+    //      rand()
+    // if hit found
+    //      scan previous and next/ top and bottom
+    //      if empty 
+    //          register GuessData
 }
 
 int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,
