@@ -170,13 +170,13 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
     if (FIELD_SQUARE_EMPTY == previousStatus) {
         // if square is empty, set as miss
         FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_MISS);
-        gData->ShotResult = RESULT_MISS;
+        gData->result = RESULT_MISS;
 
     } else if (FIELD_SQUARE_SMALL_BOAT == previousStatus) {
         // minus boat health, if 0 
         f->smallBoatLives -= 1;
         if (f->smallBoatLives == ZERO_LIVES) {
-            gData->ShotResult = RESULT_SMALL_BOAT_SUNK;
+            gData->result = RESULT_SMALL_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
         }
@@ -185,7 +185,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         // minus boat health, if 0 
         f->smallBoatLives -= 1;
         if (f->smallBoatLives == ZERO_LIVES) {
-            gData->ShotResult = RESULT_MEDIUM_BOAT_SUNK;
+            gData->result = RESULT_MEDIUM_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
         }
@@ -194,7 +194,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         // minus boat health, if 0 
         f->smallBoatLives -= 1;
         if (f->smallBoatLives == ZERO_LIVES) {
-            gData->ShotResult = RESULT_LARGE_BOAT_SUNK;
+            gData->result = RESULT_LARGE_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
         }
@@ -203,7 +203,7 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         // minus boat health, if 0 
         f->smallBoatLives -= 1;
         if (f->smallBoatLives == ZERO_LIVES) {
-            gData->ShotResult = RESULT_HUGE_BOAT_SUNK;
+            gData->result = RESULT_HUGE_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
         }
