@@ -19,6 +19,7 @@
 #define EAST_DIR 1
 #define SOUTH_DIR 0
 #define OCCUPIED 1
+#define EMPTY 0
 #define ITERATE_START 0
 
 //typedef struct {
@@ -273,6 +274,7 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     // variables
     int rowRand, colRand;
     int emptyStatus, boat_increment, occupiedFlag;
+    SquareStatus thisSquare;
     BoatDirection dirRand;
 
 
@@ -284,13 +286,15 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_HUGE; ++boat_increment){
             if (dirRand == EAST_DIR){
-                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             } else {
-                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             }
@@ -308,13 +312,15 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_LARGE; ++boat_increment){
             if (dirRand == EAST_DIR){
-                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_LARGE);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             } else {
-                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_LARGE);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             }
@@ -332,13 +338,15 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_MEDIUM; ++boat_increment){
             if (dirRand == EAST_DIR){
-                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
+                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             } else {
-                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
+                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             }
@@ -356,13 +364,15 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_TYPE_SMALL; ++boat_increment){
             if (dirRand == EAST_DIR){
-                emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_SMALL);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             } else {
-                emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_SMALL);
-                if(emptyStatus != EMPTY){
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
+                if(thisSquare != FIELD_SQUARE_EMPTY){
                     occupiedFlag = OCCUPIED;
                 }
             }
