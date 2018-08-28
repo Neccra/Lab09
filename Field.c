@@ -34,8 +34,10 @@ int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,
 void FieldPrint_UART(Field *own_field, Field * opp_field) {
     int col, row;
     printf("Friendly Field:\n");
+    printf(" 0123456789\n");
     // <editor-fold defaultstate="collapsed" desc="print friendly field">
     for (row = ITERATE_START; row < FIELD_ROWS; ++row) {
+        printf("%u", row);
         for (col = ITERATE_START; col < FIELD_COLS; ++col) {
             if (own_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
                 printf("~");
@@ -61,8 +63,10 @@ void FieldPrint_UART(Field *own_field, Field * opp_field) {
     }
     // </editor-fold>
     printf("Opponent Field:\n");
+    printf(" 0123456789\n");
     // <editor-fold defaultstate="collapsed" desc="print opponent field">
     for (row = ITERATE_START; row < FIELD_ROWS; ++row) {
+        printf("%u", row);
         for (col = ITERATE_START; col < FIELD_COLS; ++col) {
             if (opp_field->grid[row][col] == FIELD_SQUARE_EMPTY) {
                 printf("~");
@@ -283,7 +287,11 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-
+        if(dirRand == EAST_DIR){
+            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+        } else {
+            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+        }
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_HUGE; ++boat_increment){
             if (dirRand == EAST_DIR){
                 //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
@@ -309,7 +317,11 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-
+        if(dirRand == EAST_DIR){
+            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+        } else {
+            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+        }
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_LARGE; ++boat_increment){
             if (dirRand == EAST_DIR){
                 //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_LARGE);
@@ -335,7 +347,11 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-
+        if(dirRand == EAST_DIR){
+            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+        } else {
+            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+        }
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_MEDIUM; ++boat_increment){
             if (dirRand == EAST_DIR){
                 //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
@@ -361,7 +377,11 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
-
+        if(dirRand == EAST_DIR){
+            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+        } else {
+            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+        }
         for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_TYPE_SMALL; ++boat_increment){
             if (dirRand == EAST_DIR){
                 //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_SMALL);
