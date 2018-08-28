@@ -9,8 +9,8 @@
 #include "BOARD.h"
 #include "xc.h"
 
-static NegotiationData testData1 = 0xAAAA;
-static NegotiationData testData2 = 0xBBBB;
+static NegotiationData testData1 = 0xBEEF;
+static NegotiationData testData2 = 0xBEF0;
 
 int main(void) {
     BOARD_Init();

@@ -14,7 +14,7 @@ int count;
 int ParityCount(NegotiationData Input);
 
 NegotiationData NegotiationHash(NegotiationData secret){
-    hash = (secret*secret) % PUBLIC_KEY;      // creates hash of secret number via A^2 mod 0xBEEF
+    hash = (((uint64_t) secret)*secret) % PUBLIC_KEY;      // creates hash of secret number via A^2 mod 0xBEEF
     return hash;                              // Returns the hash to be used for challenge
 }
 

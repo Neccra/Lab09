@@ -21,13 +21,14 @@ int main(void) {
     BOARD_Init();
     printf("\nAgent Test Harness, compiled on %s %s\n\n", __DATE__, __TIME__);
     AgentInit();
-    small = FieldAddBoat(&ownField, 2, 2, FIELD_DIR_SOUTH, FIELD_BOAT_TYPE_SMALL);
-    if(small == TRUE){
-        printf("\nSUCCESS\n");
-    } else {
-        printf("\nFAILED\n");
-    }
+//    small = FieldAddBoat(&ownField, 2, 2, FIELD_DIR_SOUTH, FIELD_BOAT_TYPE_SMALL);
+//    if(small == TRUE){
+//        printf("\nSUCCESS\n");
+//    } else {
+//        printf("\nFAILED\n");
+//    }
     FieldPrint_UART(&ownField, &oppField);
+    
     
     printf("\n\nTESTING BB_EVENT_START_BUTTON\n");
     battleBoatEvent.type = BB_EVENT_START_BUTTON;
