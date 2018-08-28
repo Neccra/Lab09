@@ -110,7 +110,7 @@ void FieldInit(Field *own_field, Field * opp_field) {
 }
 
 SquareStatus FieldGetSquareStatus(const Field *f, uint8_t row, uint8_t col) {
-    if (row > FIELD_ROWS || col > FIELD_COLS) {
+    if (row >= FIELD_ROWS || col >= FIELD_COLS) {
         return FIELD_SQUARE_INVALID;
     } else {
         return f->grid[row][col];
@@ -277,7 +277,7 @@ uint8_t FieldGetBoatStates(const Field * f) {
 uint8_t FieldAIPlaceAllBoats(Field * f) {
     // variables
     int rowRand, colRand;
-    int emptyStatus, boat_increment, occupiedFlag;
+    int emptyStatus, boat_increment, occupiedFlag = 1;
     SquareStatus thisSquare;
     BoatDirection dirRand;
 
@@ -288,117 +288,135 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
         if(dirRand == EAST_DIR){
-            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+            printf("(%u, %u) EAST_DIR HUGE\n", colRand, rowRand);
         } else {
-            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+            printf("(%u, %u) SOUTH_DIR HUGE\n", colRand, rowRand);
         }
-        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_HUGE; ++boat_increment){
+        for(boat_increment = ITERATE_START; boat_increment < FIELD_BOAT_SIZE_HUGE; ++boat_increment){
             if (dirRand == EAST_DIR){
                 //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             } else {
                 //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             }
         }
     }
     // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_HUGE);
-    emptyStatus = OCCUPIED;
+    occupiedFlag = 1;
 
-    // empty field check
     while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
         if(dirRand == EAST_DIR){
-            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+            printf("(%u, %u) EAST_DIR LARGE \n", colRand, rowRand);
         } else {
-            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+            printf("(%u, %u) SOUTH_DIR LARGE \n", colRand, rowRand);
         }
-        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_LARGE; ++boat_increment){
+        for(boat_increment = ITERATE_START; boat_increment < FIELD_BOAT_SIZE_LARGE; ++boat_increment){
             if (dirRand == EAST_DIR){
-                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             } else {
-                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_LARGE);
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             }
         }
     }
-    // place boats
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_LARGE);
-    emptyStatus = OCCUPIED;
-
-    // empty field check
-    while (occupiedFlag == OCCUPIED) { // exit if fully empty
-        rowRand = rand() % FIELD_ROWS;
-        colRand = rand() % FIELD_COLS;
-        dirRand = rand() % TWO_DIR;
-        if(dirRand == EAST_DIR){
-            printf("(%u, %u) EAST_DIR", colRand, rowRand);
-        } else {
-            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
-        }
-        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_SIZE_MEDIUM; ++boat_increment){
-            if (dirRand == EAST_DIR){
-                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
-                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
-                if(thisSquare != FIELD_SQUARE_EMPTY){
-                    occupiedFlag = OCCUPIED;
-                }
-            } else {
-                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_MEDIUM);
-                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
-                if(thisSquare != FIELD_SQUARE_EMPTY){
-                    occupiedFlag = OCCUPIED;
-                }
-            }
-        }
-    }
-    // place boats
-    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
-    emptyStatus = OCCUPIED;
+    occupiedFlag = 1;
     
-    // empty field check
     while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
         if(dirRand == EAST_DIR){
-            printf("(%u, %u) EAST_DIR", colRand, rowRand);
+            printf("(%u, %u) EAST_DIR MEDIUM\n", colRand, rowRand);
         } else {
-            printf("(%u, %u) SOUTH_DIR", colRand, rowRand);
+            printf("(%u, %u) SOUTH_DIR MEDIUM\n", colRand, rowRand);
         }
-        for(boat_increment = ITERATE_START; boat_increment > FIELD_BOAT_TYPE_SMALL; ++boat_increment){
+        for(boat_increment = ITERATE_START; boat_increment < FIELD_BOAT_SIZE_MEDIUM; ++boat_increment){
             if (dirRand == EAST_DIR){
-                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             } else {
-                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_SMALL);
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
                 thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
-                if(thisSquare != FIELD_SQUARE_EMPTY){
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
                     occupiedFlag = OCCUPIED;
+                    break;
                 }
             }
         }
     }
-    // place boats
+    FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_MEDIUM);
+    occupiedFlag = 1;
+    
+    while (occupiedFlag == OCCUPIED) { // exit if fully empty
+        rowRand = rand() % FIELD_ROWS;
+        colRand = rand() % FIELD_COLS;
+        dirRand = rand() % TWO_DIR;
+        if(dirRand == EAST_DIR){
+            printf("(%u, %u) EAST_DIR SMALL\n", colRand, rowRand);
+        } else {
+            printf("(%u, %u) SOUTH_DIR SMALL\n", colRand, rowRand);
+        }
+        for(boat_increment = ITERATE_START; boat_increment < FIELD_BOAT_SIZE_SMALL; ++boat_increment){
+            if (dirRand == EAST_DIR){
+                //emptyStatus = EmptyFieldCheck(f, rowRand, (colRand + boat_increment), EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                thisSquare = FieldGetSquareStatus(f, rowRand, (colRand + boat_increment));
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
+                    occupiedFlag = OCCUPIED;
+                    break;
+                }
+            } else {
+                //emptyStatus = EmptyFieldCheck(f, (rowRand + boat_increment), colRand, EAST_DIR, FIELD_BOAT_TYPE_HUGE);
+                thisSquare = FieldGetSquareStatus(f, (rowRand + boat_increment), colRand);
+                if(thisSquare == FIELD_SQUARE_EMPTY){
+                    occupiedFlag = EMPTY;
+                } else {
+                    occupiedFlag = OCCUPIED;
+                    break;
+                }
+            }
+        }
+    }
     FieldAddBoat(f, rowRand, colRand, dirRand, FIELD_BOAT_TYPE_SMALL);
     return SUCCESS;
 }
