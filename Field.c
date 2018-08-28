@@ -255,16 +255,16 @@ SquareStatus FieldUpdateKnowledge(Field *f, const GuessData * gData) {
 
 uint8_t FieldGetBoatStates(const Field * f) {
     uint8_t boatStatesResult = BOAT_STATE;
-    if (f->smallBoatLives == BOAT_LIVES) {
+    if (f->smallBoatLives != ZERO_LIVES) {
         boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_SMALL;
     }
-    if (f->mediumBoatLives == BOAT_LIVES) {
+    if (f->mediumBoatLives != ZERO_LIVES) {
         boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_MEDIUM;
     }
-    if (f->largeBoatLives == BOAT_LIVES) {
+    if (f->largeBoatLives != ZERO_LIVES) {
         boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_LARGE;
     }
-    if (f->hugeBoatLives == ZERO_LIVES) {
+    if (f->hugeBoatLives != ZERO_LIVES) {
         boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_HUGE;
     }
     return boatStatesResult;
@@ -357,7 +357,7 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
     emptyStatus = OCCUPIED;
     
     // empty field check
-    while (occupiedFlag == OCCUPIED { // exit if fully empty
+    while (occupiedFlag == OCCUPIED) { // exit if fully empty
         rowRand = rand() % FIELD_ROWS;
         colRand = rand() % FIELD_COLS;
         dirRand = rand() % TWO_DIR;
