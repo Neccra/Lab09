@@ -495,9 +495,11 @@ GuessData FieldAIDecideGuess(const Field * f) {
         } else if (West == FIELD_SQUARE_UNKNOWN){
             guess->row = row;
             guess->col = col - 1;
+        } else {
+            guess = FieldAIDecideGuess(f);
         }
 
-
+        return guess;
 }
 
 // int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,
