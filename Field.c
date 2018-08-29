@@ -422,126 +422,170 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
-    int row, col;
+    // int row, col;
+    // GuessData guess;
+    // SquareStatus squareStatus = FIELD_SQUARE_MISS;
+    // SquareStatus squareState;
+    // while(squareStatus == FIELD_SQUARE_MISS){
+    //     row = rand() % FIELD_ROWS;
+    //     col = rand() % FIELD_COLS;
+    //     squareState = FieldGetSquareStatus(f, row, col);
+    //     if(squareState == FIELD_SQUARE_UNKNOWN){
+    //         guess.row = row;
+    //         guess.col = col;
+    //         break;
+    //     } else if(squareState == FIELD_SQUARE_HIT || squareState == FIELD_SQUARE_MISS){
+    //         continue;
+    //     }
+    // }
+    // return guess;
+
+
+
+//          The following code uses checkerboaring for guessing hits at the start of the game
+//      since all boats are 2+ length, it is more efficient to guess only half of the 
+//      board by checkerboarding.
+//          Then once a hit is found, the code will look though the adjacent squares to check
+//      for hits, and if there are hits, the code will fire on the same row/col the two shots 
+//      are on.
+    int increment, row, col;
+    SquareStatus North, West, East, South, oneOver;
     GuessData guess;
-    SquareStatus squareStatus = FIELD_SQUARE_MISS;
     SquareStatus squareState;
-    while(squareStatus == FIELD_SQUARE_MISS){
-        row = rand() % FIELD_ROWS;
-        col = rand() % FIELD_COLS;
-        squareState = FieldGetSquareStatus(f, row, col);
-        if(squareState == FIELD_SQUARE_UNKNOWN){
-            guess.row = row;
-            guess.col = col;
-            break;
-        } else if(squareState == FIELD_SQUARE_HIT || squareState == FIELD_SQUARE_MISS){
-            continue;
+
+            // generate 
+            increment = 0;
+            do{
+                row = rand() % FIELD_ROWS;
+                if(row %  2 == 0){ 
+                    col = ((2 * rand() +1) % FIELD_COLS); // if even, generate odd col
+                } else {
+                    col = ((2 * rand()) % FIELD_COLS); // if odd, generate even col
+                }
+                squareState = FieldGetSquareStatus(f, row, col);
+                if(squareState != FIELD_SQUARE_MISS){
+                    ++ increment;
+                }
+                
+            } while(increment != 4 || FIELD_SQUARE_UNKNOWN != FieldGetSquareStatus(f, row, col)); // dont't stop till unknown found
+            // generate end
+
+    if(squareState == FIELD_SQUARE_UNKNOWN){    
+        guess->row = row;
+        guess->col = col;
+    
+
+    // after 10 attempts, no unknows are found, start checking adjacent of hits
+    } else if(squareState == FIELD_SQUARE_HIT)
+        // get adjacent square statuses
+        
+        North = FieldGetSquareStatus(f, row + 1, col);
+        South = FieldGetSquareStatus(f, row - 1, col);
+        East = FieldGetSquareStatus(f, row, col + 1);
+        West = FieldGetSquareStatus(f, row, col - 1);
+        if (North == FIELD_SQUARE_UNKNOWN){
+            guess->row = row + 1;
+            guess->col = col;
+        } else if (South == FIELD_SQUARE_UNKNOWN){
+            guess->row = row - 1;
+            guess->col = col;
+        } else if (East == FIELD_SQUARE_UNKNOWN){
+            guess->row = row;
+            guess->col = col + 1;
+        } else if (West == FIELD_SQUARE_UNKNOWN){
+            guess->row = row;
+            guess->col = col - 1;
         }
-    }
-    return guess;
-//    for(row = 0; row < FIELD_ROWS; ++row){
-//        for(col = 0; col < FIELD_COLS; ++col){
-//            if(f->grid[row][col] == FIELD_SQUARE_HIT){
-//                if(f->grid[row+1][col] == FIELD_SQUARE_HIT){
-//                    if(f->grid[row+2][col] == )
-//                }
-//            } else if(f->grid[row][col] == FIELD_SQUARE_MISS){
-//                continue;
-//            }
-//        }
-//    }
-//    row = rand() % FIELD_ROWS;
-//    col = rand() % FIELD_COLS;
-//    if(f->grid[row][col] == FIELD)
-//    guess.row = rand() %
+
+
 }
 
-int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,
-        int dir, BoatType boatType) {
-    int row, col;
-    SquareStatus curStatus;
-    // check direction
-    if (dir == SOUTH_DIR) {
+// int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,
+//         int dir, BoatType boatType) {
+//     int row, col;
+//     SquareStatus curStatus;
+//     // check direction
+//     if (dir == SOUTH_DIR) {
 
-        // check boat_type
-        if (boatType == FIELD_BOAT_TYPE_SMALL) {
-            for (row = rowRand; row > (FIELD_BOAT_SIZE_SMALL + rowRand); ++row) {
-                curStatus = FieldGetSquareStatus(f, row, colRand);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_MEDIUM) {
-            for (row = rowRand; row > (FIELD_BOAT_SIZE_MEDIUM + rowRand); ++row) {
-                curStatus = FieldGetSquareStatus(f, row, colRand);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_LARGE) {
-            for (row = rowRand; row > (FIELD_BOAT_SIZE_LARGE + rowRand); ++row) {
-                curStatus = FieldGetSquareStatus(f, row, colRand);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_HUGE) {
-            for (row = rowRand; row > (FIELD_BOAT_SIZE_HUGE + rowRand); ++row) {
-                curStatus = FieldGetSquareStatus(f, row, colRand);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        }
+//         // check boat_type
+//         if (boatType == FIELD_BOAT_TYPE_SMALL) {
+//             for (row = rowRand; row > (FIELD_BOAT_SIZE_SMALL + rowRand); ++row) {
+//                 curStatus = FieldGetSquareStatus(f, row, colRand);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_MEDIUM) {
+//             for (row = rowRand; row > (FIELD_BOAT_SIZE_MEDIUM + rowRand); ++row) {
+//                 curStatus = FieldGetSquareStatus(f, row, colRand);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_LARGE) {
+//             for (row = rowRand; row > (FIELD_BOAT_SIZE_LARGE + rowRand); ++row) {
+//                 curStatus = FieldGetSquareStatus(f, row, colRand);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_HUGE) {
+//             for (row = rowRand; row > (FIELD_BOAT_SIZE_HUGE + rowRand); ++row) {
+//                 curStatus = FieldGetSquareStatus(f, row, colRand);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         }
 
-    } else if (dir == EAST_DIR) {
+//     } else if (dir == EAST_DIR) {
 
-        // check boat_type
-        if (boatType == FIELD_BOAT_TYPE_SMALL) {
-            for (col = colRand; col > (FIELD_BOAT_SIZE_SMALL + colRand); ++col) {
-                curStatus = FieldGetSquareStatus(f, rowRand, col);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_MEDIUM) {
-            for (col = colRand; col > (FIELD_BOAT_SIZE_MEDIUM + colRand); ++col) {
-                curStatus = FieldGetSquareStatus(f, rowRand, col);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_LARGE) {
-            for (col = colRand; col > (FIELD_BOAT_SIZE_LARGE + colRand); ++col) {
-                curStatus = FieldGetSquareStatus(f, rowRand, col);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        } else if (boatType == FIELD_BOAT_TYPE_HUGE) {
-            for (col = colRand; col > (FIELD_BOAT_SIZE_HUGE + colRand); ++col) {
-                curStatus = FieldGetSquareStatus(f, rowRand, col);
-                if (curStatus != FIELD_SQUARE_EMPTY) {
-                    return OCCUPIED;
-                } else {
-                    return EMPTY;
-                }
-            }
-        }
-    }
-}
+//         // check boat_type
+//         if (boatType == FIELD_BOAT_TYPE_SMALL) {
+//             for (col = colRand; col > (FIELD_BOAT_SIZE_SMALL + colRand); ++col) {
+//                 curStatus = FieldGetSquareStatus(f, rowRand, col);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_MEDIUM) {
+//             for (col = colRand; col > (FIELD_BOAT_SIZE_MEDIUM + colRand); ++col) {
+//                 curStatus = FieldGetSquareStatus(f, rowRand, col);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_LARGE) {
+//             for (col = colRand; col > (FIELD_BOAT_SIZE_LARGE + colRand); ++col) {
+//                 curStatus = FieldGetSquareStatus(f, rowRand, col);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         } else if (boatType == FIELD_BOAT_TYPE_HUGE) {
+//             for (col = colRand; col > (FIELD_BOAT_SIZE_HUGE + colRand); ++col) {
+//                 curStatus = FieldGetSquareStatus(f, rowRand, col);
+//                 if (curStatus != FIELD_SQUARE_EMPTY) {
+//                     return OCCUPIED;
+//                 } else {
+//                     return EMPTY;
+//                 }
+//             }
+//         }
+//     }
+// }
 
