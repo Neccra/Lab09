@@ -23,7 +23,7 @@ NegotiationData A;
 NegotiationData B;
 NegotiationData hashA;
 Message message;
-GuessData * guess;
+GuessData guess;
 SquareStatus squareStatus;
 char display[100];
 FieldOledTurn turn;
@@ -33,7 +33,7 @@ void AgentInit(void){
     result = FieldAIPlaceAllBoats(&ownField);
     Agent_State = AGENT_STATE_START;
     turnCounter = 0;
-    FieldOledDrawScreen(&ownField, &oppField, FIELD_OLED_TURN_NONE, turnCounter);
+//    FieldOledDrawScreen(&ownField, &oppField, FIELD_OLED_TURN_NONE, turnCounter);
 //    while(huge == FALSE && large == FALSE && medium == FALSE && small == FALSE){
 //        row = rand() % FIELD_ROWS;
 //        col = rand() % FIELD_COLS;
@@ -134,9 +134,9 @@ Message AgentRun(BB_Event event){
                 row = rand();
                 col = rand();
                 message.type = MESSAGE_SHO;
-                *guess = FieldAIDecideGuess(&oppField);
-                message.param0 = guess->row;
-                message.param1 = guess->col;
+                guess = FieldAIDecideGuess(&oppField);
+                message.param0 = guess.row;
+                message.param1 = guess.col;
                 turn = FIELD_OLED_TURN_MINE;
                 Agent_State = AGENT_STATE_ATTACKING;
             } else if(NegotiateCoinFlip(A, B) == HEADS){
@@ -160,10 +160,10 @@ Message AgentRun(BB_Event event){
     case AGENT_STATE_WAITING_TO_SEND:
         if(event.type == BB_EVENT_MESSAGE_SENT){
             turnCounter++;
-            *guess = FieldAIDecideGuess(&oppField);
+            guess = FieldAIDecideGuess(&oppField);
             message.type = MESSAGE_SHO;
-            message.param0 = guess->row;
-            message.param1 = guess->col;
+            message.param0 = guess.row;
+            message.param1 = guess.col;
             turn = FIELD_OLED_TURN_MINE;
             Agent_State = AGENT_STATE_ATTACKING;
             FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
@@ -177,11 +177,11 @@ Message AgentRun(BB_Event event){
         break;
     case AGENT_STATE_ATTACKING:
         if(event.type == BB_EVENT_RES_RECEIVED){
-            guess->row = event.param0;
-            guess->col = event.param1;
-            guess->result = event.param2;
+            guess.row = event.param0;
+            guess.col = event.param1;
+            guess.result = event.param2;
             message.type = MESSAGE_NONE;
-            squareStatus = FieldUpdateKnowledge(&oppField, (const GuessData *) guess);
+            squareStatus = FieldUpdateKnowledge(&oppField, &guess);
             if(FieldGetBoatStates(&oppField) == 0){
                 turn = FIELD_OLED_TURN_NONE;
                 Agent_State = AGENT_STATE_END_SCREEN;
@@ -204,7 +204,7 @@ Message AgentRun(BB_Event event){
 //            prevMediumLives = Field.mediumBoatLives;
 //            prevLargeLives = Field.largeBoatLives;
 //            prevHugeLives = Field.hugeBoatLives;
-            squareStatus = FieldRegisterEnemyAttack(&ownField, guess);
+            squareStatus = FieldRegisterEnemyAttack(&ownField, &guess);
             if(FieldGetBoatStates(&ownField) == 0){
                 message.type = MESSAGE_NONE;
                 turn = FIELD_OLED_TURN_NONE;
@@ -213,7 +213,7 @@ Message AgentRun(BB_Event event){
                 message.type = MESSAGE_RES;
                 message.param0 = event.param0;
                 message.param1 = event.param1;
-                message.param2 = guess->result;
+                message.param2 = guess.result;
                 turn = FIELD_OLED_TURN_MINE;
                 Agent_State = AGENT_STATE_WAITING_TO_SEND;
             }

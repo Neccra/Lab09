@@ -8,6 +8,7 @@
 #include "Agent.h"
 #include "xc.h"
 #include "BOARD.h"
+#include "Oled.h"
 #include <stdio.h>
 
 Field oppField;
@@ -19,6 +20,8 @@ Message battleBoatMessage;
 
 int main(void) {
     BOARD_Init();
+    OledInit();
+    
     printf("\nAgent Test Harness, compiled on %s %s\n\n", __DATE__, __TIME__);
     AgentInit();
 //    small = FieldAddBoat(&ownField, 2, 2, FIELD_DIR_SOUTH, FIELD_BOAT_TYPE_SMALL);

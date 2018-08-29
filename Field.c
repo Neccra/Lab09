@@ -422,13 +422,38 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
-    // scan field for hits
-    // if no hits
-    //      rand()
-    // if hit found
-    //      scan previous and next/ top and bottom
-    //      if empty 
-    //          register GuessData
+    int row, col;
+    GuessData guess;
+    SquareStatus squareStatus = FIELD_SQUARE_MISS;
+    SquareStatus squareState;
+    while(squareStatus == FIELD_SQUARE_MISS){
+        row = rand() % FIELD_ROWS;
+        col = rand() % FIELD_COLS;
+        squareState = FieldGetSquareStatus(f, row, col);
+        if(squareState == FIELD_SQUARE_UNKNOWN){
+            guess.row = row;
+            guess.col = col;
+            break;
+        } else if(squareState == FIELD_SQUARE_HIT || squareState == FIELD_SQUARE_MISS){
+            continue;
+        }
+    }
+    return guess;
+//    for(row = 0; row < FIELD_ROWS; ++row){
+//        for(col = 0; col < FIELD_COLS; ++col){
+//            if(f->grid[row][col] == FIELD_SQUARE_HIT){
+//                if(f->grid[row+1][col] == FIELD_SQUARE_HIT){
+//                    if(f->grid[row+2][col] == )
+//                }
+//            } else if(f->grid[row][col] == FIELD_SQUARE_MISS){
+//                continue;
+//            }
+//        }
+//    }
+//    row = rand() % FIELD_ROWS;
+//    col = rand() % FIELD_COLS;
+//    if(f->grid[row][col] == FIELD)
+//    guess.row = rand() %
 }
 
 int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,

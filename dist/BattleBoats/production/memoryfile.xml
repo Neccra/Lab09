@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project>                                  
+  <executable name="dist/BattleBoats/production/Lab09.production.elf">                 
+    <memory name="program">                 
+      <units>bytes</units>                 
+      <length>531968</length>                 
+      <used>44504</used>                     
+      <free>487464</free>                     
+    </memory>                              
+    <memory name="data">              
+      <units>bytes</units>                 
+      <length>32768</length>                 
+      <used>3524</used>                     
+      <free>29244</free>                     
+    </memory>                              
+  </executable>                            
+</project>                                 

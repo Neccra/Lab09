@@ -4,4 +4,7 @@ Field.h  \
 Agent.h  \
 Message.h  \
  BattleBoats.h  \
-BOARD.h 
+BOARD.h  \
+Oled.h  \
+Ascii.h  \
+OledDriver.h 
