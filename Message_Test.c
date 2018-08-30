@@ -14,6 +14,8 @@ char CAT [4] = "CAT";
 char Null = '\0';
 uint8_t calculatedChecksum;
 BB_Event messageEvent;
+Message message;
+char 
 
 int main(void){
 	BOARD_Init();
@@ -24,17 +26,22 @@ int main(void){
 	if (calculatedChecksum == 0x56){
 		printf("Message_CalculateChecksum Test: Success \n");
 	} else {
-		printf("Message_CalculateChecksum Test: FAIL \ncalculatedChecksum = %x",
+		printf("Message_CalculateChecksum Test: FAIL \ncalculatedChecksum = %x\n",
 		 calculatedChecksum);
 	}
 
 
 	// Message_ParseMessage
-	if(Message_ParseMessage(CAT, "56",  messageEvent) == SUCCESS){
+	if(Message_ParseMessage(CAT, "56", &messageEvent) == SUCCESS){
 		printf("Message_ParseMessage Test: Success \n");
 	} else {
 		printf("Message_ParseMessage Test: FAIL \n");
 	}
+        
+        // Message Encode
+        message.type = MESSAGE_CHA;
+        message.param0 = rand()%100
+        Message_Encode()
 
 
     while (1);

@@ -135,18 +135,22 @@ uint8_t FieldAddBoat(Field *f, uint8_t row, uint8_t col, BoatDirection dir, Boat
     if (boat_type == FIELD_BOAT_TYPE_SMALL) {
         boatSize = FIELD_BOAT_SIZE_SMALL;
         boatType = FIELD_SQUARE_SMALL_BOAT;
+        f->smallBoatLives = FIELD_BOAT_SIZE_SMALL;
 
     } else if (boat_type == FIELD_BOAT_TYPE_MEDIUM) {
         boatSize = FIELD_BOAT_SIZE_MEDIUM;
         boatType = FIELD_SQUARE_MEDIUM_BOAT;
-
+        f->mediumBoatLives = FIELD_BOAT_SIZE_MEDIUM;
+        
     } else if (boat_type == FIELD_BOAT_TYPE_LARGE) {
         boatSize = FIELD_BOAT_SIZE_LARGE;
         boatType = FIELD_SQUARE_LARGE_BOAT;
+        f->largeBoatLives = FIELD_BOAT_SIZE_LARGE;
 
     } else if (boat_type == FIELD_BOAT_TYPE_HUGE) {
         boatSize = FIELD_BOAT_SIZE_HUGE;
         boatType = FIELD_SQUARE_HUGE_BOAT;
+        f->hugeBoatLives = FIELD_BOAT_SIZE_HUGE;
 
     } else {
         return STANDARD_ERROR;
@@ -190,36 +194,44 @@ SquareStatus FieldRegisterEnemyAttack(Field *f, GuessData *gData) {
         // minus boat health, if 0 
         f->smallBoatLives -= DAMAGE;
         if (f->smallBoatLives == ZERO_LIVES) {
+            FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
             gData->result = RESULT_SMALL_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+            gData->result = FIELD_SQUARE_HIT;
         }
         
     } else if (FIELD_SQUARE_MEDIUM_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= DAMAGE;
-        if (f->smallBoatLives == ZERO_LIVES) {
+        f->mediumBoatLives -= DAMAGE;
+        if (f->mediumBoatLives == ZERO_LIVES) {
+            FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
             gData->result = RESULT_MEDIUM_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+            gData->result = FIELD_SQUARE_HIT;
         }
                
     } else if (FIELD_SQUARE_LARGE_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= DAMAGE;
-        if (f->smallBoatLives == ZERO_LIVES) {
+        f->largeBoatLives -= DAMAGE;
+        if (f->largeBoatLives == ZERO_LIVES) {
+            FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
             gData->result = RESULT_LARGE_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+            gData->result = FIELD_SQUARE_HIT;
         }
         
     } else if (FIELD_SQUARE_HUGE_BOAT == previousStatus) {
         // minus boat health, if 0 
-        f->smallBoatLives -= DAMAGE;
-        if (f->smallBoatLives == ZERO_LIVES) {
+        f->hugeBoatLives -= DAMAGE;
+        if (f->hugeBoatLives == ZERO_LIVES) {
+            FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
             gData->result = RESULT_HUGE_BOAT_SUNK;
         } else {
             FieldSetSquareStatus(f, gData->row, gData->col, FIELD_SQUARE_HIT);
+            gData->result = FIELD_SQUARE_HIT;
         }
     }
     return previousStatus;
@@ -260,16 +272,16 @@ SquareStatus FieldUpdateKnowledge(Field *f, const GuessData * gData) {
 uint8_t FieldGetBoatStates(const Field * f) {
     uint8_t boatStatesResult = BOAT_STATE;
     if (f->smallBoatLives != ZERO_LIVES) {
-        boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_SMALL;
+        boatStatesResult = boatStatesResult | FIELD_BOAT_STATUS_SMALL;
     }
     if (f->mediumBoatLives != ZERO_LIVES) {
-        boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_MEDIUM;
+        boatStatesResult = boatStatesResult | FIELD_BOAT_STATUS_MEDIUM;
     }
     if (f->largeBoatLives != ZERO_LIVES) {
-        boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_LARGE;
+        boatStatesResult = boatStatesResult | FIELD_BOAT_STATUS_LARGE;
     }
     if (f->hugeBoatLives != ZERO_LIVES) {
-        boatStatesResult = boatStatesResult & FIELD_BOAT_STATUS_HUGE;
+        boatStatesResult = boatStatesResult | FIELD_BOAT_STATUS_HUGE;
     }
     return boatStatesResult;
 }
@@ -277,7 +289,7 @@ uint8_t FieldGetBoatStates(const Field * f) {
 uint8_t FieldAIPlaceAllBoats(Field * f) {
     // variables
     int rowRand, colRand;
-    int emptyStatus, boat_increment, occupiedFlag = 1;
+    int boat_increment, occupiedFlag = 1;
     SquareStatus thisSquare;
     BoatDirection dirRand;
 
@@ -422,23 +434,23 @@ uint8_t FieldAIPlaceAllBoats(Field * f) {
 }
 
 GuessData FieldAIDecideGuess(const Field * f) {
-    // int row, col;
-    // GuessData guess;
-    // SquareStatus squareStatus = FIELD_SQUARE_MISS;
-    // SquareStatus squareState;
-    // while(squareStatus == FIELD_SQUARE_MISS){
-    //     row = rand() % FIELD_ROWS;
-    //     col = rand() % FIELD_COLS;
-    //     squareState = FieldGetSquareStatus(f, row, col);
-    //     if(squareState == FIELD_SQUARE_UNKNOWN){
-    //         guess.row = row;
-    //         guess.col = col;
-    //         break;
-    //     } else if(squareState == FIELD_SQUARE_HIT || squareState == FIELD_SQUARE_MISS){
-    //         continue;
-    //     }
-    // }
-    // return guess;
+     int row, col;
+     GuessData guess;
+     SquareStatus squareStatus = FIELD_SQUARE_MISS;
+     SquareStatus squareState;
+     while(squareStatus == FIELD_SQUARE_MISS){
+         row = rand() % FIELD_ROWS;
+         col = rand() % FIELD_COLS;
+         squareState = FieldGetSquareStatus(f, row, col);
+         if(squareState == FIELD_SQUARE_UNKNOWN){
+             guess.row = row;
+             guess.col = col;
+             break;
+         } else if(squareState == FIELD_SQUARE_HIT || squareState == FIELD_SQUARE_MISS){
+             continue;
+         }
+     }
+     return guess;
 
 
 
@@ -448,58 +460,58 @@ GuessData FieldAIDecideGuess(const Field * f) {
 //          Then once a hit is found, the code will look though the adjacent squares to check
 //      for hits, and if there are hits, the code will fire on the same row/col the two shots 
 //      are on.
-    int increment, row, col;
-    SquareStatus North, West, East, South, oneOver;
-    GuessData guess;
-    SquareStatus squareState;
-
-            // generate 
-            increment = 0;
-            do{
-                row = rand() % FIELD_ROWS;
-                if(row %  2 == 0){ 
-                    col = ((2 * rand() +1) % FIELD_COLS); // if even, generate odd col
-                } else {
-                    col = ((2 * rand()) % FIELD_COLS); // if odd, generate even col
-                }
-                squareState = FieldGetSquareStatus(f, row, col);
-                if(squareState != FIELD_SQUARE_MISS){
-                    ++ increment;
-                }
-                
-            } while(increment != 4 || FIELD_SQUARE_UNKNOWN != FieldGetSquareStatus(f, row, col)); // dont't stop till unknown found
-            // generate end
-
-    if(squareState == FIELD_SQUARE_UNKNOWN){    
-        guess->row = row;
-        guess->col = col;
-    
-
-    // after 10 attempts, no unknows are found, start checking adjacent of hits
-    } else if(squareState == FIELD_SQUARE_HIT)
-        // get adjacent square statuses
-        
-        North = FieldGetSquareStatus(f, row + 1, col);
-        South = FieldGetSquareStatus(f, row - 1, col);
-        East = FieldGetSquareStatus(f, row, col + 1);
-        West = FieldGetSquareStatus(f, row, col - 1);
-        if (North == FIELD_SQUARE_UNKNOWN){
-            guess->row = row + 1;
-            guess->col = col;
-        } else if (South == FIELD_SQUARE_UNKNOWN){
-            guess->row = row - 1;
-            guess->col = col;
-        } else if (East == FIELD_SQUARE_UNKNOWN){
-            guess->row = row;
-            guess->col = col + 1;
-        } else if (West == FIELD_SQUARE_UNKNOWN){
-            guess->row = row;
-            guess->col = col - 1;
-        } else {
-            guess = FieldAIDecideGuess(f);
-        }
-
-        return guess;
+//    int increment, row, col;
+//    SquareStatus North, West, East, South;
+//    GuessData guess;
+//    SquareStatus squareState;
+//
+//            // generate 
+//            increment = 0;
+//            do{
+//                row = rand() % FIELD_ROWS;
+//                if(row %  2 == 0){ 
+//                    col = ((2 * rand() +1) % FIELD_COLS); // if even, generate odd col
+//                } else {
+//                    col = ((2 * rand()) % FIELD_COLS); // if odd, generate even col
+//                }
+//                squareState = FieldGetSquareStatus(f, row, col);
+//                if(squareState != FIELD_SQUARE_MISS){
+//                    ++ increment;
+//                }
+//                
+//            } while(increment != 4 || FIELD_SQUARE_UNKNOWN == FieldGetSquareStatus(f, row, col)); // dont't stop till unknown found
+//            // generate end
+//
+//    if(squareState == FIELD_SQUARE_UNKNOWN){    
+//        guess.row = row;
+//        guess.col = col;
+//    
+//
+//    // after 10 attempts, no unknows are found, start checking adjacent of hits
+//    } else if(squareState == FIELD_SQUARE_HIT)
+//        // get adjacent square statuses
+//        
+//        North = FieldGetSquareStatus(f, row + 1, col);
+//        South = FieldGetSquareStatus(f, row - 1, col);
+//        East = FieldGetSquareStatus(f, row, col + 1);
+//        West = FieldGetSquareStatus(f, row, col - 1);
+//        if (North == FIELD_SQUARE_UNKNOWN){
+//            guess.row = row + 1;
+//            guess.col = col;
+//        } else if (South == FIELD_SQUARE_UNKNOWN){
+//            guess.row = row - 1;
+//            guess.col = col;
+//        } else if (East == FIELD_SQUARE_UNKNOWN){
+//            guess.row = row;
+//            guess.col = col + 1;
+//        } else if (West == FIELD_SQUARE_UNKNOWN){
+//            guess.row = row;
+//            guess.col = col - 1;
+//        } else {
+//            guess = FieldAIDecideGuess(f);
+//        }
+//
+//        return guess;
 }
 
 // int EmptyFieldCheck(Field *f, uint8_t rowRand, uint8_t colRand,

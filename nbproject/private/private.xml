@@ -4,12 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/George/Desktop/Lab09/Agent.c</file>
-            <file>file:/C:/Users/George/Desktop/Lab09/Field.c</file>
-            <file>file:/C:/Users/George/Desktop/Lab09/Field.h</file>
+            <file>file:/C:/Users/George/Desktop/Lab09/Message.c</file>
+            <file>file:/C:/Users/George/Desktop/Lab09/Message.h</file>
             <file>file:/C:/Users/George/Desktop/Lab09/Message_Test.c</file>
-            <file>file:/C:/Users/George/Desktop/Lab09/Field_Test.c</file>
-            <file>file:/C:/Users/George/Desktop/Lab09/NegotiationTest.c</file>
-            <file>file:/C:/Users/George/Desktop/Lab09/AgentTest.c</file>
         </group>
     </open-files>
 </project-private>
