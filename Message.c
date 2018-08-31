@@ -52,13 +52,13 @@ int Message_ParseMessage(const char* payload,
     } else if (*payload == 'A'){
         message_event->type = BB_EVENT_ACC_RECEIVED;
 
-    } else if (*payload == 'R'){
+    } else if (*payload == 'R' && *(payload + 2) == 'V'){
         message_event->type = BB_EVENT_REV_RECEIVED;
 
     } else if (*payload == 'S'){
         message_event->type = BB_EVENT_SHO_RECEIVED;
 
-    } else if (*payload == 'R' && *(payload + 1) == 'R'){
+    } else if (*payload == 'R' && *(payload + 2) == 'S'){
         message_event->type = BB_EVENT_RES_RECEIVED;
 
     }

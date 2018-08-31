@@ -21,11 +21,6 @@
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
-      <itemPath>Field_test_helpers.o</itemPath>
-      <itemPath>autotest_tools.o</itemPath>
-      <itemPath>staff_test_field.o</itemPath>
-      <itemPath>staff_test_message.o</itemPath>
-      <itemPath>staff_test_negotiation.o</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -70,6 +65,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>Lab9SupportLib.a</linkerLibFileItem>
+            <linkerLibFileItem>staff_test_message.o</linkerLibFileItem>
+            <linkerLibFileItem>Field_test_helpers.o</linkerLibFileItem>
+            <linkerLibFileItem>autotest_tools.o</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -749,6 +747,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>Lab9SupportLib.a</linkerLibFileItem>
+            <linkerLibFileItem>staff_test_message.o</linkerLibFileItem>
+            <linkerLibFileItem>Field_test_helpers.o</linkerLibFileItem>
+            <linkerLibFileItem>autotest_tools.o</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -1456,6 +1457,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>Lab9SupportLib.a</linkerLibFileItem>
+            <linkerLibFileItem>staff_test_message.o</linkerLibFileItem>
+            <linkerLibFileItem>Field_test_helpers.o</linkerLibFileItem>
+            <linkerLibFileItem>autotest_tools.o</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -2135,6 +2139,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>Lab9SupportLib.a</linkerLibFileItem>
+            <linkerLibFileItem>staff_test_message.o</linkerLibFileItem>
+            <linkerLibFileItem>Field_test_helpers.o</linkerLibFileItem>
+            <linkerLibFileItem>autotest_tools.o</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -2300,8 +2307,6 @@
         <property key="wpo-lto" value="false"/>
       </C32Global>
       <item path="FieldTest.c" ex="true" overriding="false">
-      </item>
-      <item path="Field_test_helpers.o" ex="true" overriding="false">
       </item>
       <item path="Lab09_main.c" ex="true" overriding="false">
         <C32>
@@ -2748,12 +2753,6 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
-      <item path="autotest_tools.o" ex="true" overriding="false">
-      </item>
-      <item path="staff_test_message.o" ex="true" overriding="false">
-      </item>
-      <item path="staff_test_negotiation.o" ex="true" overriding="false">
-      </item>
     </conf>
     <conf name="Field_Test" type="2">
       <toolsSet>
@@ -2770,6 +2769,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>Lab9SupportLib.a</linkerLibFileItem>
+            <linkerLibFileItem>staff_test_message.o</linkerLibFileItem>
+            <linkerLibFileItem>Field_test_helpers.o</linkerLibFileItem>
+            <linkerLibFileItem>autotest_tools.o</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
