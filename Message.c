@@ -46,19 +46,19 @@ int Message_ParseMessage(const char* payload,
 
         return STANDARD_ERROR;
     }
-    if (payload == 'C'){
+    if (*payload == 'C'){
         message_event->type = BB_EVENT_CHA_RECEIVED;
 
-    } else if (payload == 'A'){
+    } else if (*payload == 'A'){
         message_event->type = BB_EVENT_ACC_RECEIVED;
 
-    } else if (payload == 'C'){
+    } else if (*payload == 'C'){
         message_event->type = BB_EVENT_REV_RECEIVED;
 
-    } else if (payload == 'S'){
+    } else if (*payload == 'S'){
         message_event->type = BB_EVENT_SHO_RECEIVED;
 
-    } else if (payload == 'R'){
+    } else if (*payload == 'R'){
         message_event->type = BB_EVENT_RES_RECEIVED;
 
     }
@@ -131,6 +131,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 decoded_message_event = BB_EVENT_NO_EVENT;
                 return SUCCESS;
             }
+
             break;
             // </editor-fold>
 
@@ -165,7 +166,6 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 return SUCCESS;
             }
 
-            return SUCCESS;
             break;
             // </editor-fold>
 
@@ -189,7 +189,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 if (SUCCESS == parseMessageResult) {
                     // checksum is correct, no cheating detected
                     currentDecodeState = WAITING_FOR_START_DELIMITER;
-                    decoded_message_event = currentBBEvent->type;
+                    decoded_message_event->type = currentBBEvent.type;
                     return SUCCESS;
                 } else {
                     // checksum is incorrect, ignoring message
@@ -207,8 +207,9 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 currentDecodeState = WAITING_FOR_START_DELIMITER;
                 return STANDARD_ERROR;
             }
-
+            
             break;
             // </editor-fold>
     }
+    return SUCCESS;
 }
