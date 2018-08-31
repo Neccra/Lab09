@@ -21,6 +21,11 @@
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
+      <itemPath>Field_test_helpers.o</itemPath>
+      <itemPath>autotest_tools.o</itemPath>
+      <itemPath>staff_test_field.o</itemPath>
+      <itemPath>staff_test_message.o</itemPath>
+      <itemPath>staff_test_negotiation.o</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

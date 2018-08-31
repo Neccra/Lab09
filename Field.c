@@ -103,6 +103,11 @@ void FieldInit(Field *own_field, Field * opp_field) {
         }
     }
     // set opponent boat lives
+    own_field->smallBoatLives = FIELD_BOAT_SIZE_SMALL;
+    own_field->mediumBoatLives = FIELD_BOAT_SIZE_MEDIUM;
+    own_field->largeBoatLives = FIELD_BOAT_SIZE_LARGE;
+    own_field->hugeBoatLives = FIELD_BOAT_SIZE_HUGE;
+    // set opponent boat lives
     opp_field->smallBoatLives = FIELD_BOAT_SIZE_SMALL;
     opp_field->mediumBoatLives = FIELD_BOAT_SIZE_MEDIUM;
     opp_field->largeBoatLives = FIELD_BOAT_SIZE_LARGE;
