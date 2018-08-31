@@ -76,7 +76,8 @@ Message AgentRun(BB_Event event){
             message.type = MESSAGE_NONE;
         } else if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
-            AgentInit();
+            AgentInit();            
+            FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
         } else {
             message.type = MESSAGE_NONE;                    // Error message when the wrong event type is received while in the Challenging field
             OledClear(OLED_COLOR_BLACK);
@@ -106,7 +107,8 @@ Message AgentRun(BB_Event event){
 //                Agent_State = AGENT_STATE_END_SCREEN;
         } else if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
-            AgentInit();
+            AgentInit();            
+            FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
         } else {
             turn = FIELD_OLED_TURN_NONE;                    // If the improper battleboat event is received while in the Accepting field,
             message.type = MESSAGE_NONE;                    // then the message display is explains that.
@@ -129,6 +131,7 @@ Message AgentRun(BB_Event event){
         } else if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
             AgentInit();
+            FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
         } else {
             message.type = MESSAGE_NONE;                        // If the incorrect event is received while in the waiting to send state an error
             OledClear(OLED_COLOR_BLACK);                        // message is displayed notifying of the state and that an incorrect type was received
@@ -157,6 +160,7 @@ Message AgentRun(BB_Event event){
         } else if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
             AgentInit();
+            FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
         } else {                                                // If the improper battleboat event is receieved while in the attacking state,
             message.type = MESSAGE_NONE;                        // an appropriate error message is displayed notifying of the state and improper message
             OledClear(OLED_COLOR_BLACK);
@@ -188,6 +192,7 @@ Message AgentRun(BB_Event event){
         } else if(event.type == BB_EVENT_RESET_BUTTON){
             message.type = MESSAGE_NONE;
             AgentInit();
+            FieldOledDrawScreen(&ownField, &oppField, turn, turnCounter);
         } else {
             turn = FIELD_OLED_TURN_NONE;                // If the incorrect battleboat event is received while in the Defending state, then an
             OledClear(OLED_COLOR_BLACK);                // appropriate message is displayed notifying the user.
