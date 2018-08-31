@@ -90,9 +90,9 @@ int Message_Encode(char *message_string, Message message_to_encode) {
 
     // <editor-fold defaultstate="collapsed" desc="message wrap">
     // wrap payload
-    uint8_t encodingChecksum;
+    int encodingChecksum;
     // get checksum
-    encodingChecksum = Message_CalculateChecksum(outgoingPayload);
+    encodingChecksum = (int) Message_CalculateChecksum(outgoingPayload);
     // wrap payload
     outgoingMessageLength = sprintf(message_string, MESSAGE_TEMPLATE, outgoingPayload,
             encodingChecksum);
@@ -110,6 +110,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             if (char_in == '$') {
                 // delimiter detected, change state to RECORDING_PAYLOAD
                 currentDecodeState = RECORDING_PAYLOAD;
+                return SUCCESS;
             }
             break;
             // </editor-fold>
@@ -139,6 +140,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 return STANDARD_ERROR;
 
             }
+            return SUCCESS;
             break;
             // </editor-fold>
 
@@ -154,7 +156,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
             if (char_in == '\n') {
                 // end of packet detected
 
-                //Message_ParseMessage(incomingPayload, incomingChecksum, currentBBEvent);
+                Message_ParseMessage(incomingPayload, incomingChecksum, &currentBBEvent);
 
                 if (Message_CalculateChecksum(incomingPayload)) {
                     // checksum is correct, no cheating detected
@@ -176,6 +178,7 @@ int Message_Decode(unsigned char char_in, BB_Event * decoded_message_event) {
                 currentDecodeState = WAITING_FOR_START_DELIMITER;
                 return STANDARD_ERROR;
             }
+            return SUCCESS;
             break;
             // </editor-fold>
     }

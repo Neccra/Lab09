@@ -14,8 +14,8 @@ char CAT [4] = "CAT";
 char Null = '\0';
 uint8_t calculatedChecksum;
 BB_Event messageEvent;
-Message message;
-char 
+Message testMessage;
+char encodedMessage [MESSAGE_MAX_LEN];
 
 int main(void){
 	BOARD_Init();
@@ -38,10 +38,26 @@ int main(void){
 		printf("Message_ParseMessage Test: FAIL \n");
 	}
         
-        // Message Encode
-        message.type = MESSAGE_CHA;
-        message.param0 = rand()%100
-        Message_Encode()
+    // Message Encode
+    testMessage.type = MESSAGE_RES;
+    testMessage.param0 = 10 ;
+    testMessage.param1 = 6 ;
+    testMessage.param2 = 9 ;
+
+    Message_Encode(encodedMessage, testMessage);
+    printf("Message_Encode Test Output:%s \n", encodedMessage);
+
+    // Message Decode
+    char inputChar = '$';
+    if(SUCCESS == Message_Decode(inputChar, &messageEvent)){
+    	printf("Message_Decode Test : SUCCESS");
+    } else {
+    	printf("Message_Decode Test : FAIL");
+    }
+    //		pass full NMEA
+
+    //		$, ',' , 
+
 
 
     while (1);
