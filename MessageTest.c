@@ -50,13 +50,18 @@ int main(void){
     // Message Decode
     char inputChar = '$';
     if(SUCCESS == Message_Decode(inputChar, &messageEvent)){
-    	printf("Message_Decode Test : SUCCESS");
+    	printf("Message_Decode Test : SUCCESS\n");
     } else {
-    	printf("Message_Decode Test : FAIL");
+    	printf("Message_Decode Test : FAIL\n");
     }
-    //		pass full NMEA
 
-    //		$, ',' , 
+    // test delimiter ,
+    inputChar = ',';
+    if(SUCCESS == Message_Decode(inputChar, &messageEvent)){
+    	printf("Message_Decode Test : SUCCESS\n");
+    } else {
+    	printf("Message_Decode Test : FAIL\n");
+    }
 
 
 
