@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c Field.c MessageTest.c
+SOURCEFILES_QUOTED_IF_SPACED=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c Field.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/Field.o ${OBJECTDIR}/MessageTest.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/BOARD.o.d ${OBJECTDIR}/CircularBuffer.o.d ${OBJECTDIR}/FieldOled.o.d ${OBJECTDIR}/Uart1.o.d ${OBJECTDIR}/Message.o.d ${OBJECTDIR}/Negotiation.o.d ${OBJECTDIR}/Agent.o.d ${OBJECTDIR}/Field.o.d ${OBJECTDIR}/MessageTest.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/Field.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/BOARD.o.d ${OBJECTDIR}/CircularBuffer.o.d ${OBJECTDIR}/FieldOled.o.d ${OBJECTDIR}/Uart1.o.d ${OBJECTDIR}/Message.o.d ${OBJECTDIR}/Negotiation.o.d ${OBJECTDIR}/Agent.o.d ${OBJECTDIR}/Field.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/Field.o ${OBJECTDIR}/MessageTest.o
+OBJECTFILES=${OBJECTDIR}/BOARD.o ${OBJECTDIR}/CircularBuffer.o ${OBJECTDIR}/FieldOled.o ${OBJECTDIR}/Uart1.o ${OBJECTDIR}/Message.o ${OBJECTDIR}/Negotiation.o ${OBJECTDIR}/Agent.o ${OBJECTDIR}/Field.o
 
 # Source Files
-SOURCEFILES=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c Field.c MessageTest.c
+SOURCEFILES=BOARD.c CircularBuffer.c FieldOled.c Uart1.c Message.c Negotiation.c Agent.c Field.c
 
 
 CFLAGS=
@@ -90,7 +90,7 @@ endif
 	${MAKE}  -f nbproject/Makefile-Message_Test.mk dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
 MP_PROCESSOR_OPTION=32MX340F512H
-MP_LINKER_FILE_OPTION=,--script="Field_test_helpers.o"
+MP_LINKER_FILE_OPTION=,--script="staff_test_field.o"
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
@@ -154,12 +154,6 @@ ${OBJECTDIR}/Field.o: Field.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Field.o 
 	@${FIXDEPS} "${OBJECTDIR}/Field.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Field.o.d" -o ${OBJECTDIR}/Field.o Field.c    -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/MessageTest.o: MessageTest.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/MessageTest.o.d 
-	@${RM} ${OBJECTDIR}/MessageTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/MessageTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -DSimulator=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/MessageTest.o.d" -o ${OBJECTDIR}/MessageTest.o MessageTest.c    -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
 else
 ${OBJECTDIR}/BOARD.o: BOARD.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -209,12 +203,6 @@ ${OBJECTDIR}/Field.o: Field.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/Field.o 
 	@${FIXDEPS} "${OBJECTDIR}/Field.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/Field.o.d" -o ${OBJECTDIR}/Field.o Field.c    -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/MessageTest.o: MessageTest.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/MessageTest.o.d 
-	@${RM} ${OBJECTDIR}/MessageTest.o 
-	@${FIXDEPS} "${OBJECTDIR}/MessageTest.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Wall -MMD -MF "${OBJECTDIR}/MessageTest.o.d" -o ${OBJECTDIR}/MessageTest.o MessageTest.c    -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD) 
-	
 endif
 
 # ------------------------------------------------------------------------------------
@@ -226,12 +214,12 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: link
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  Lab9SupportLib.a  Field_test_helpers.o
+dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  Lab9SupportLib.a  staff_test_field.o
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
 	${MP_CC} $(MP_EXTRA_LD_PRE) -g -mdebugger -DSimulator=1 -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}    Lab9SupportLib.a      -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD)      -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D=__DEBUG_D,--defsym=Simulator=1,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
 	
 else
-dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  Lab9SupportLib.a Field_test_helpers.o
+dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  Lab9SupportLib.a staff_test_field.o
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
 	${MP_CC} $(MP_EXTRA_LD_PRE)  -mprocessor=$(MP_PROCESSOR_OPTION)  -o dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}    Lab9SupportLib.a      -DXPRJ_Message_Test=$(CND_CONF)    $(COMPARISON_BUILD)  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
 	${MP_CC_DIR}\\xc32-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/Lab09.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} 

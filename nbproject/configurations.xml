@@ -2301,6 +2301,8 @@
       </C32Global>
       <item path="FieldTest.c" ex="true" overriding="false">
       </item>
+      <item path="Field_test_helpers.o" ex="true" overriding="false">
+      </item>
       <item path="Lab09_main.c" ex="true" overriding="false">
         <C32>
         </C32>
@@ -2314,6 +2316,8 @@
         </C32CPP>
         <C32Global>
         </C32Global>
+      </item>
+      <item path="MessageTest.c" ex="true" overriding="false">
       </item>
       <item path="Negotiation.c" ex="false" overriding="false">
         <C32>
@@ -2744,6 +2748,12 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
+      <item path="autotest_tools.o" ex="true" overriding="false">
+      </item>
+      <item path="staff_test_message.o" ex="true" overriding="false">
+      </item>
+      <item path="staff_test_negotiation.o" ex="true" overriding="false">
+      </item>
     </conf>
     <conf name="Field_Test" type="2">
       <toolsSet>
